@@ -6,58 +6,66 @@
     android:layout_height="match_parent"
     tools:context=".Gametable">
 
-    <Button
+    <ImageButton
         android:id="@+id/buttonTop"
         android:layout_width="74dp"
         android:layout_height="74dp"
-        android:textAlignment="center"
-        app:icon="@drawable/up_arrow"
-        app:iconSize="30dp"
+        android:adjustViewBounds="true"
+        android:background="#f0e17d"
+        android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.712" />
+        app:layout_constraintVertical_bias="0.727"
+        app:srcCompat="@drawable/up_arrow" />
 
-    <Button
+    <ImageButton
         android:id="@+id/buttonBottom"
         android:layout_width="74dp"
         android:layout_height="74dp"
-        app:icon="@drawable/down_arrow"
-        app:iconSize="30dp"
+        android:adjustViewBounds="true"
+        android:background="#f0e17d"
+        android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.929" />
+        app:layout_constraintVertical_bias="0.919"
+        app:srcCompat="@drawable/down_arrow" />
 
-    <Button
+    <ImageButton
         android:id="@+id/buttonLeft"
         android:layout_width="74dp"
         android:layout_height="74dp"
-        app:icon="@drawable/back_arrow"
-        app:iconSize="30dp"
+        android:adjustViewBounds="true"
+        android:background="#f0e17d"
+        android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.278"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.824" />
+        app:layout_constraintVertical_bias="0.824"
+        app:srcCompat="@drawable/back_arrow" />
 
-    <Button
+    <ImageButton
         android:id="@+id/buttonRight"
         android:layout_width="74dp"
         android:layout_height="74dp"
-        app:icon="@drawable/next_arrow"
-        app:iconSize="20dp"
+        android:adjustViewBounds="true"
+        android:background="#f0e17d"
+        android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.718"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.824" />
+        app:layout_constraintVertical_bias="0.824"
+        app:srcCompat="@drawable/next_arrow" />
+
 
     <GridView
         android:layout_width="409dp"

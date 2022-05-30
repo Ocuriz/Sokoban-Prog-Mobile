@@ -33,25 +33,25 @@ public class MainActivity extends AppCompatActivity {
         }
         Log.i("test", String.valueOf(plateauFinal[2][1].getType()));
     }
-    /*goLeft(){
+    /*goLeft(View v){
         if("à compléter" > 0 && .type != CaseType.MUR){
             player.setX(player.getX() - 1);
         }
     }*/
 
-    /*goRight(){
+    /*goRight(View v){
         if("à compléter" < .numColumns && .type != CaseType.MUR){
             player.setX(player.getX() + 1);
         }
     }*/
 
-    /*goTop(){
+    /*goTop(View v){
         if("à compléter" > 0 && .type != CaseType.MUR){
             player.setY(player.getY() - 1);
         }
     }*/
 
-    /*goBack(){
+    /*goBack(View v){
         if("à compléter" < .numColumns && .type != CaseType.MUR){
             player.setY(player.getY() - 1);
         }
