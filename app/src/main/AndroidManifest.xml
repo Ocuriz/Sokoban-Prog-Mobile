@@ -10,6 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Sokoban">
         <activity
+            android:name=".Gametable"
+            android:exported="false" >
+
+        </activity>
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
