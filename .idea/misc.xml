@@ -3,10 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/o-User-DawinAlt/Documents/prog-mobile/Sokoban-Prog-Mobile/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1785" />
-        <entry key="..\:/Users/o-User-DawinAlt/Documents/prog-mobile/Sokoban-Prog-Mobile/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1785" />
-        <entry key="..\:/Users/o-User-DawinAlt/Documents/prog-mobile/Sokoban-Prog-Mobile/app/src/main/res/layout/activity_main.xml" value="0.14130434782608695" />
-        <entry key="..\:/Users/o-User-DawinAlt/Documents/prog-mobile/Sokoban-Prog-Mobile/app/src/main/res/layout/gametable.xml" value="0.25" />
+        <entry key="..\:/Users/julia/OneDrive/Bureau/Cours/ProgMobile/Sokoban-Prog-Mobile/app/src/main/res/layout/activity_gametable.xml" value="0.11885245901639344" />
+        <entry key="..\:/Users/julia/OneDrive/Bureau/Cours/ProgMobile/Sokoban-Prog-Mobile/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/Users/julia/OneDrive/Bureau/Cours/ProgMobile/Sokoban-Prog-Mobile/app/src/main/res/layout/gametable.xml" value="0.1" />
       </map>
     </option>
   </component>

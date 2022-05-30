@@ -2,11 +2,21 @@ package com.example.sokoban;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.GameManager;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 
 import java.lang.reflect.Array;
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
+
+    public void redirectToGametable(View v) {
+        Intent i = new Intent(MainActivity.this, Gametable.class);
+        startActivity(i);
+    }
 
     public void initGame(char[][] plateau){
         char[] ligne;
@@ -16,10 +26,12 @@ public class MainActivity extends AppCompatActivity {
             Case[] finalLigne = new Case[ligne.length];
             for(int j = 0; j < ligne.length; j++){
                 Case element = new Case(i,j);
+                element.setType(String.valueOf(ligne[j]));
                 finalLigne[j] = element;
             }
             plateauFinal[i] = finalLigne;
         }
+        Log.i("test", String.valueOf(plateauFinal[2][1].getType()));
     }
     /*goLeft(){
         if("à compléter" > 0 && .type != CaseType.MUR){
@@ -45,9 +57,29 @@ public class MainActivity extends AppCompatActivity {
         }
     }*/
 
+    /*
+        ..####...
+        ###..####
+        #.....C.#
+        #.#..#C.#
+        #.x.x#P.#
+        #########
+    */
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        char[][] temp = {
+                            {'.', '.', '#', '#', '#', '#', '.', '.', '.'},
+                            {'#', '#', '#','.', '.','#', '#', '#','#'},
+                            {'#', '.', '.', '.', '.', '.', 'C', '.', '#'},
+                            {'#', '.', '#', '.', '.', '#', 'C', '.', '#'},
+                            {'#', '.', 'X', '.', 'X', '#', 'P', '.', '#'},
+                            {'#', '#', '#', '#', '#', '#', '#', '#', '#'}
+                        };
+
+        initGame(temp);
     }
 }
