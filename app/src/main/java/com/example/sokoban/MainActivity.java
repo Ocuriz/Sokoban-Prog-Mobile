@@ -9,12 +9,16 @@ import java.lang.reflect.Array;
 public class MainActivity extends AppCompatActivity {
 
     public void initGame(char[][] plateau){
-        char[] line;
+        char[] ligne;
+        Case[][] plateauFinal = new Case[plateau.length][];
         for(int i = 0; i < plateau.length; i++){
-            line = plateau[i];
-            for(int j = 0; j < line.length; j++){
+            ligne = plateau[i];
+            Case[] finalLigne = new Case[ligne.length];
+            for(int j = 0; j < ligne.length; j++){
                 Case element = new Case(i,j);
+                finalLigne[j] = element;
             }
+            plateauFinal[i] = finalLigne;
         }
     }
     /*goLeft(){
