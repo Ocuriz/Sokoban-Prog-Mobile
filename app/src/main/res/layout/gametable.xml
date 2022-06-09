@@ -7,7 +7,7 @@
     tools:context=".Gametable">
 
     <ImageButton
-        android:id="@+id/buttonTop"
+        android:id="@+id/idButtonTop"
         android:layout_width="74dp"
         android:layout_height="74dp"
         android:adjustViewBounds="true"
@@ -22,7 +22,7 @@
         app:srcCompat="@drawable/up_arrow" />
 
     <ImageButton
-        android:id="@+id/buttonBottom"
+        android:id="@+id/idButtonBottom"
         android:layout_width="74dp"
         android:layout_height="74dp"
         android:adjustViewBounds="true"
@@ -37,7 +37,7 @@
         app:srcCompat="@drawable/down_arrow" />
 
     <ImageButton
-        android:id="@+id/buttonLeft"
+        android:id="@+id/idButtonLeft"
         android:layout_width="74dp"
         android:layout_height="74dp"
         android:adjustViewBounds="true"
@@ -52,7 +52,7 @@
         app:srcCompat="@drawable/back_arrow" />
 
     <ImageButton
-        android:id="@+id/buttonRight"
+        android:id="@+id/idButtonRight"
         android:layout_width="74dp"
         android:layout_height="74dp"
         android:adjustViewBounds="true"
@@ -68,8 +68,10 @@
 
 
     <GridView
+        android:id="@+id/idGV"
         android:layout_width="409dp"
         android:layout_height="466dp"
+        android:numColumns="9"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
