@@ -8,7 +8,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.Array;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
@@ -31,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
             }
             plateauFinal[i] = finalLigne;
         }
-        Log.i("test", String.valueOf(plateauFinal[2][1].getType()));
+        //Log.i("test", String.valueOf(plateauFinal[2][1].getType()));
     }
     /*goLeft(View v){
         if("à compléter" > 0 && .type != CaseType.MUR){
@@ -66,20 +71,43 @@ public class MainActivity extends AppCompatActivity {
         #########
     */
 
+    public char[][] getTableau() throws IOException, MalformedURLException{
+        URL url = new URL("http://127.0.0.1:5000/api/tableau/1");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
+        StringBuffer json = new StringBuffer();
+        String line;
+
+        while ((line = reader.readLine()) != null) {
+            json.append(line);
+            Log.i("cc", line);
+        }
+        reader.close();
+
+        Log.i("hello", String.valueOf(json));
+
+        char[][] temp = {
+                {'.', '.', '#', '#', '#', '#', '.', '.', '.'},
+                {'#', '#', '#','.', '.','#', '#', '#','#'},
+                {'#', '.', '.', '.', '.', '.', 'C', '.', '#'},
+                {'#', '.', '#', '.', '.', '#', 'C', '.', '#'},
+                {'#', '.', 'X', '.', 'X', '#', 'P', '.', '#'},
+                {'#', '#', '#', '#', '#', '#', '#', '#', '#'}
+        };
+
+        return temp;
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        char[][] temp = {
-                            {'.', '.', '#', '#', '#', '#', '.', '.', '.'},
-                            {'#', '#', '#','.', '.','#', '#', '#','#'},
-                            {'#', '.', '.', '.', '.', '.', 'C', '.', '#'},
-                            {'#', '.', '#', '.', '.', '#', 'C', '.', '#'},
-                            {'#', '.', 'X', '.', 'X', '#', 'P', '.', '#'},
-                            {'#', '#', '#', '#', '#', '#', '#', '#', '#'}
-                        };
 
-        initGame(temp);
+        char[][] tab = {};
+        try {
+            tab = getTableau();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        initGame(tab);
     }
 }

@@ -5,8 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.example.sokoban.database.DataBaseHelper;
-
 public class Gametable extends AppCompatActivity {
 
     public void initGame(char[][] plateau){
@@ -62,7 +60,7 @@ public class Gametable extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        DataBaseHelper db = new DataBaseHelper();
+        //DataBaseHelper db = new DataBaseHelper();
         char[][] temp = {
                 {'.', '.', '#', '#', '#', '#', '.', '.', '.'},
                 {'#', '#', '#','.', '.','#', '#', '#','#'},
@@ -71,6 +69,6 @@ public class Gametable extends AppCompatActivity {
                 {'#', '.', 'X', '.', 'X', '#', 'P', '.', '#'},
                 {'#', '#', '#', '#', '#', '#', '#', '#', '#'}
         };
-
+        initGame(temp);
     }
 }
