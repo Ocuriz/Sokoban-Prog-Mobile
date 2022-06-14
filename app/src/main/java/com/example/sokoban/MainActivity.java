@@ -72,18 +72,16 @@ public class MainActivity extends AppCompatActivity {
     */
 
     public char[][] getTableau() throws IOException, MalformedURLException{
-        URL url = new URL("http://127.0.0.1:5000/api/tableau/1");
+        URL url = new URL("http://185.212.225.90/api/tableau/1");
         BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
         StringBuffer json = new StringBuffer();
         String line;
 
         while ((line = reader.readLine()) != null) {
             json.append(line);
-            Log.i("cc", line);
+            Log.i("cc",  String.valueOf(line));
         }
         reader.close();
-
-        Log.i("hello", String.valueOf(json));
 
         char[][] temp = {
                 {'.', '.', '#', '#', '#', '#', '.', '.', '.'},

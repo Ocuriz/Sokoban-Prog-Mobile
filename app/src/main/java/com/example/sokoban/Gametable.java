@@ -5,6 +5,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.concurrent.ExecutionException;
+
 public class Gametable extends AppCompatActivity {
 
     public void initGame(char[][] plateau){
@@ -20,7 +31,6 @@ public class Gametable extends AppCompatActivity {
             }
             plateauFinal[i] = finalLigne;
         }
-        Log.i("test", String.valueOf(plateauFinal[2][1].getType()));
     }
     /*goLeft(){
         if("à compléter" > 0 && .type != CaseType.MUR){
@@ -56,11 +66,26 @@ public class Gametable extends AppCompatActivity {
     */
 
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        //DataBaseHelper db = new DataBaseHelper();
+    public char[][] getTableau() throws IOException, MalformedURLException {
+        String urlAPI = "http://185.212.225.90/api/tableau/1";
+        GetData data = new GetData();
+        String resultData = "";
+        JSONArray array = new JSONArray();
+        try {
+            resultData = data.execute(urlAPI).get();
+            JSONObject object = new JSONObject(resultData);
+            array = object.getJSONArray("data");
+
+            for(int i = 0; i < array.length(); i++){
+                JSONObject ligneJSON = array.getJSONObject(i);
+                Log.i("vv", String.valueOf(ligneJSON));
+            }
+        } catch (ExecutionException | InterruptedException | JSONException e) {
+            e.printStackTrace();
+        }
+
+
+
         char[][] temp = {
                 {'.', '.', '#', '#', '#', '#', '.', '.', '.'},
                 {'#', '#', '#', '.', '.', '#', '#', '#', '#'},
@@ -69,6 +94,21 @@ public class Gametable extends AppCompatActivity {
                 {'#', '.', 'X', '.', 'X', '#', 'P', '.', '#'},
                 {'#', '#', '#', '#', '#', '#', '#', '#', '#'}
         };
-        initGame(temp);
+
+        return temp;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        char[][] tab = {};
+        try {
+            tab = getTableau();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        initGame(tab);
     }
 }

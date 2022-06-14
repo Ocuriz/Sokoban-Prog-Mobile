@@ -1,6 +1,7 @@
 import flask
 from flask import request, jsonify
 import sqlite3
+import json
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
@@ -37,9 +38,13 @@ def getTableauByOrdre(tableau_id):
    all_ligne = cur.execute('SELECT * FROM ligne WHERE tableau_id=' + tableau_id + ' ORDER BY\
    ordre;').fetchall()
 
-   final_tableau = []
+   tableau = []
    for ligne in all_ligne:
-      final_tableau.append(list(ligne["Contenu"])) 
+      tableau.append((ligne["Contenu"])) 
+
+   final_tableau = []
+   for i in range(0, len(tableau), 1):
+      final_tableau.append({"ligne"+ str(i+1): str(tableau[i])})
 
    return jsonify(final_tableau)
 
