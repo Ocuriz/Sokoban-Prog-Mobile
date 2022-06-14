@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.GridView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,6 +16,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 
 public class Gametable extends AppCompatActivity {
@@ -71,6 +75,7 @@ public class Gametable extends AppCompatActivity {
         GetData data = new GetData();
         String resultData = "";
         JSONArray array = new JSONArray();
+        String ligne = "";
         try {
             resultData = data.execute(urlAPI).get();
             JSONObject object = new JSONObject(resultData);
@@ -78,7 +83,9 @@ public class Gametable extends AppCompatActivity {
 
             for(int i = 0; i < array.length(); i++){
                 JSONObject ligneJSON = array.getJSONObject(i);
-                Log.i("vv", String.valueOf(ligneJSON));
+
+                ligne = ligneJSON.getString("ligne"+(i+1));
+                Log.i("vv", String.valueOf(ligne));
             }
         } catch (ExecutionException | InterruptedException | JSONException e) {
             e.printStackTrace();
@@ -101,11 +108,21 @@ public class Gametable extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
+        setContentView(R.layout.gametable);
+        GridView grid = findViewById(R.id.idGV);
+        ArrayList<String> lst = new ArrayList<String>();
+        ArrayAdapter<String> adapter;
         char[][] tab = {};
         try {
             tab = getTableau();
+            String[] temp = new String [6];
+            for(int i=0; i < 6; i++){
+                temp[i] =  tab[i].toString();
+                lst.addAll(Arrays.asList(temp[0]));
+            }
+            adapter = new ArrayAdapter<String>(this, R.layout.gametable, R.id.tw, lst);
+
+            grid.setAdapter(adapter);
         } catch (IOException e) {
             e.printStackTrace();
         }
