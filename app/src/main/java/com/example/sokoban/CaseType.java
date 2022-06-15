@@ -1,5 +1,5 @@
 package com.example.sokoban;
 
 public enum CaseType {
-    VIDE, MUR, DESTINATION
+    VIDE, MUR, DESTINATION, JOUEUR, BOITE
 }

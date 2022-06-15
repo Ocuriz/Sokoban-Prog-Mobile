@@ -20,6 +20,12 @@ public class Case {
             case "X":
                 this.type = CaseType.DESTINATION;
                 break;
+            case "J":
+                this.type = CaseType.JOUEUR;
+                break;
+            case "C":
+                this.type = CaseType.BOITE;
+                break;
             default:
                 this.type = CaseType.VIDE;
                 break;

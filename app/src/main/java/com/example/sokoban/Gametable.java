@@ -3,6 +3,7 @@ package com.example.sokoban;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
@@ -23,8 +24,12 @@ import java.util.concurrent.ExecutionException;
 public class Gametable extends AppCompatActivity {
 
     public void initGame(char[][] plateau){
+        Case[] listeElement = new Case[54];
         char[] ligne;
         Case[][] plateauFinal = new Case[plateau.length][];
+        GridView grid = findViewById(R.id.test);
+        ArrayList<String> lst = new ArrayList<String>();
+        ArrayAdapter<String> adapter;
         for(int i = 0; i < plateau.length; i++){
             ligne = plateau[i];
             Case[] finalLigne = new Case[ligne.length];
@@ -32,9 +37,25 @@ public class Gametable extends AppCompatActivity {
                 Case element = new Case(i,j);
                 element.setType(String.valueOf(ligne[j]));
                 finalLigne[j] = element;
+
             }
             plateauFinal[i] = finalLigne;
         }
+        int index = 0;
+        for(int k=0; k < plateauFinal.length; k++){
+            for(int l=0; l < plateauFinal[k].length; l++){
+                Log.i("CC", String.valueOf(plateauFinal[k].length));
+                listeElement[index] = plateauFinal[k][l];
+                index++;
+            }
+        }
+
+        grid.setNumColumns(9);
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        AdaptationGrid adaptationGrid = new AdaptationGrid(getApplicationContext(), listeElement, displayMetrics.widthPixels);
+        grid.setAdapter(adaptationGrid);
+
     }
     /*goLeft(){
         if("à compléter" > 0 && .type != CaseType.MUR){
@@ -108,24 +129,18 @@ public class Gametable extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.gametable);
-        GridView grid = findViewById(R.id.idGV);
-        ArrayList<String> lst = new ArrayList<String>();
-        ArrayAdapter<String> adapter;
+        setContentView(R.layout.activity_main);
         char[][] tab = {};
         try {
             tab = getTableau();
             String[] temp = new String [6];
-            for(int i=0; i < 6; i++){
-                temp[i] =  tab[i].toString();
-                lst.addAll(Arrays.asList(temp[0]));
-            }
-            adapter = new ArrayAdapter<String>(this, R.layout.gametable, R.id.tw, lst);
 
-            grid.setAdapter(adapter);
+            initGame(tab);
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-        initGame(tab);
+
     }
 }
