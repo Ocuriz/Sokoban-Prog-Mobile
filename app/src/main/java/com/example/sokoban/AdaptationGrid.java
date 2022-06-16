@@ -14,10 +14,12 @@ public class AdaptationGrid extends BaseAdapter {
     Case[] elements;
     LayoutInflater inflater;
     Integer screenWidth;
-    public AdaptationGrid(Context context, Case[] elements, Integer screenWidth) {
+    Integer screenHeight;
+    public AdaptationGrid(Context context, Case[] elements, Integer screenWidth, Integer screenHeigth) {
         this.context = context;
         this.elements = elements;
         this.screenWidth = screenWidth;
+        this.screenHeight = screenHeigth;
         inflater = (LayoutInflater.from(context));
     }
 
@@ -38,26 +40,28 @@ public class AdaptationGrid extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        convertView = inflater.inflate(R.layout.activity_main, null);
-        ImageView icon = (ImageView) convertView.findViewById(R.id.iconTest);
+        convertView = inflater.inflate(R.layout.grid_layout, null);
+        ImageView icon = (ImageView) convertView.findViewById(R.id.icon);
+        /*icon.getLayoutParams().height = 100;
+        icon.getLayoutParams().width = 50;
         icon.setAdjustViewBounds(true);
         icon.setScaleType(ImageView.ScaleType.CENTER_CROP);
         icon.setPadding(0,0,0,0);
-        icon.setLayoutParams(new LinearLayout.LayoutParams(this.screenWidth/9, this.screenWidth/9));
+        icon.requestLayout();*/
         if (elements[position].getType() == CaseType.MUR){
             icon.setImageResource(R.drawable.mur);
         }
         if (elements[position].getType() == CaseType.DESTINATION){
-            icon.setImageResource(R.drawable.croix);
+            icon.setImageResource(R.drawable.vert);
         }
         if (elements[position].getType() == CaseType.VIDE){
             icon.setImageResource(R.drawable.vide);
         }
         if (elements[position].getType() == CaseType.BOITE){
-            icon.setImageResource(R.drawable.boite);
+            icon.setImageResource(R.drawable.marron);
         }
         if (elements[position].getType() == CaseType.JOUEUR){
-            icon.setImageResource(R.drawable.joueur);
+            icon.setImageResource(R.drawable.bleu);
         }
         return convertView;
     }

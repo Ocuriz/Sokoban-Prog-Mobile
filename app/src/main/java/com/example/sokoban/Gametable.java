@@ -2,9 +2,11 @@ package com.example.sokoban;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Person;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 
@@ -12,74 +14,154 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 
 public class Gametable extends AppCompatActivity {
 
+    Case[] listeElement = new Case[54];
+    Case[][] plateauFinal;
+    Personnage joueur;
+    GridView grid;
+    ArrayList<Caisse> listeCaisses = new ArrayList<Caisse>();
+
     public void initGame(char[][] plateau){
-        Case[] listeElement = new Case[54];
         char[] ligne;
-        Case[][] plateauFinal = new Case[plateau.length][];
-        GridView grid = findViewById(R.id.test);
         ArrayList<String> lst = new ArrayList<String>();
         ArrayAdapter<String> adapter;
+        plateauFinal = new Case[plateau.length][];
+        grid = findViewById(R.id.idGV);
+        int index = 0;
+        int indexCaisse = 0;
         for(int i = 0; i < plateau.length; i++){
             ligne = plateau[i];
             Case[] finalLigne = new Case[ligne.length];
             for(int j = 0; j < ligne.length; j++){
-                Case element = new Case(i,j);
+                Case element = new Case(j,i);
                 element.setType(String.valueOf(ligne[j]));
                 finalLigne[j] = element;
-
+                listeElement[index] = element;
+                index++;
+                if(element.getType() == CaseType.JOUEUR){
+                    joueur = new Personnage(element.getX(), element.getY());
+                }
+                if(element.getType() == CaseType.BOITE){
+                    listeCaisses.add(new Caisse(element.getX(), element.getY()));
+                }
             }
             plateauFinal[i] = finalLigne;
-        }
-        int index = 0;
-        for(int k=0; k < plateauFinal.length; k++){
-            for(int l=0; l < plateauFinal[k].length; l++){
-                Log.i("CC", String.valueOf(plateauFinal[k].length));
-                listeElement[index] = plateauFinal[k][l];
-                index++;
-            }
         }
 
         grid.setNumColumns(9);
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        AdaptationGrid adaptationGrid = new AdaptationGrid(getApplicationContext(), listeElement, displayMetrics.widthPixels);
+        AdaptationGrid adaptationGrid = new AdaptationGrid(getApplicationContext(), listeElement, grid.getLayoutParams().width, grid.getLayoutParams().height);
         grid.setAdapter(adaptationGrid);
 
     }
-    /*goLeft(){
-        if("à compléter" > 0 && .type != CaseType.MUR){
-            player.setX(player.getX() - 1);
-        }
-    }*/
 
-    /*goRight(){
-        if("à compléter" < .numColumns && .type != CaseType.MUR){
-            player.setX(player.getX() + 1);
-        }
-    }*/
+    public void updateView(){
+        grid.setNumColumns(9);
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        AdaptationGrid adaptationGrid = new AdaptationGrid(getApplicationContext(), listeElement, grid.getLayoutParams().width, grid.getLayoutParams().height);
+        grid.setAdapter(adaptationGrid);
+    }
 
-    /*goTop(){
-        if("à compléter" > 0 && .type != CaseType.MUR){
-            player.setY(player.getY() - 1);
-        }
-    }*/
+    public void goLeft(View view){
 
-    /*goBack(){
-        if("à compléter" < .numColumns && .type != CaseType.MUR){
-            player.setY(player.getY() - 1);
+        int xJoueur = joueur.getX();
+        int yJoueur = joueur.getY();
+        Caisse caisse;
+        if( xJoueur-1 >= 0 && plateauFinal[yJoueur][xJoueur-1].getType() != CaseType.MUR){
+            if(xJoueur-2 >=0 && plateauFinal[yJoueur][xJoueur-2].getType() != CaseType.MUR
+            && plateauFinal[yJoueur][xJoueur-2].getType() != CaseType.BOITE){
+                for(Caisse c: listeCaisses){
+                    if(c.getX() == xJoueur-1 && c.getY() == yJoueur){
+                        c.setX(xJoueur-2);
+                        plateauFinal[yJoueur][xJoueur-2].setType("C");
+                        plateauFinal[yJoueur][xJoueur-1].setType("vide");
+                    }
+                }
+            }
+            if(plateauFinal[yJoueur][xJoueur-1].getType() != CaseType.BOITE){
+                plateauFinal[yJoueur][xJoueur-1].setType("P");
+                plateauFinal[yJoueur][xJoueur].setType("vide");
+                joueur.setX(xJoueur-1);
+            }
         }
-    }*/
+        updateView();
+    }
+
+    public void goRight(View view){
+        int xJoueur = joueur.getX();
+        int yJoueur = joueur.getY();
+        if( xJoueur+1 <= 8 && plateauFinal[yJoueur][xJoueur+1].getType() != CaseType.MUR){
+            if(xJoueur+2 <=8 && plateauFinal[yJoueur][xJoueur+2].getType() != CaseType.MUR
+                    && plateauFinal[yJoueur][xJoueur+2].getType() != CaseType.BOITE){
+                for(Caisse c: listeCaisses){
+                    if(c.getX() == xJoueur+1 && c.getY() == yJoueur){
+                        c.setX(xJoueur+2);
+                        plateauFinal[yJoueur][xJoueur+2].setType("C");
+                        plateauFinal[yJoueur][xJoueur+1].setType("vide");
+                    }
+                }
+            }
+            if(plateauFinal[yJoueur][xJoueur+1].getType() != CaseType.BOITE){
+                plateauFinal[yJoueur][xJoueur+1].setType("P");
+                plateauFinal[yJoueur][xJoueur].setType("vide");
+                joueur.setX(xJoueur+1);
+            }
+        }
+        updateView();
+    }
+
+    public void goTop(View view){
+        int xJoueur = joueur.getX();
+        int yJoueur = joueur.getY();
+        if( yJoueur-1 >= 0 && plateauFinal[yJoueur-1][xJoueur].getType() != CaseType.MUR){
+            if(yJoueur-2 >=0 && plateauFinal[yJoueur-2][xJoueur].getType() != CaseType.MUR
+                    && plateauFinal[yJoueur-2][xJoueur].getType() != CaseType.BOITE){
+                for(Caisse c: listeCaisses){
+                    if(c.getX() == xJoueur && c.getY() == yJoueur-1){
+                        c.setY(yJoueur-2);
+                        plateauFinal[yJoueur-2][xJoueur].setType("C");
+                        plateauFinal[yJoueur-1][xJoueur].setType("vide");
+                    }
+                }
+            }
+            if(plateauFinal[yJoueur-1][xJoueur].getType() != CaseType.BOITE){
+                plateauFinal[yJoueur-1][xJoueur].setType("P");
+                plateauFinal[yJoueur][xJoueur].setType("vide");
+                joueur.setY(yJoueur-1);
+            }
+        }
+        updateView();
+    }
+
+    public void goBottom(View view){
+        int xJoueur = joueur.getX();
+        int yJoueur = joueur.getY();
+        if( yJoueur+1 <= 5 && plateauFinal[yJoueur+1][xJoueur].getType() != CaseType.MUR){
+            for(Caisse c: listeCaisses){
+                if(c.getX() == xJoueur && c.getY() == yJoueur+1){
+                    if(yJoueur+2<=5 && plateauFinal[yJoueur+2][xJoueur].getType() != CaseType.MUR){
+                        c.setY(yJoueur+2);
+                        plateauFinal[yJoueur+2][xJoueur].setType("C");
+                        plateauFinal[yJoueur+1][xJoueur].setType("vide");
+                    }
+                }
+            }
+            if(plateauFinal[yJoueur+1][xJoueur].getType() != CaseType.BOITE) {
+                plateauFinal[yJoueur + 1][xJoueur].setType("P");
+                plateauFinal[yJoueur][xJoueur].setType("vide");
+                joueur.setY(yJoueur + 1);
+            }
+        }
+        updateView();
+    }
 
     /*
         ..####...
@@ -129,7 +211,7 @@ public class Gametable extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.gametable);
         char[][] tab = {};
         try {
             tab = getTableau();

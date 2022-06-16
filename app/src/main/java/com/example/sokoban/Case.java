@@ -20,7 +20,7 @@ public class Case {
             case "X":
                 this.type = CaseType.DESTINATION;
                 break;
-            case "J":
+            case "P":
                 this.type = CaseType.JOUEUR;
                 break;
             case "C":
