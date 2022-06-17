@@ -8,8 +8,10 @@
     <GridView
         android:id="@+id/idGV"
         android:layout_width="0dp"
-        android:layout_height="450dp"
+        android:layout_height="0dp"
         android:layout_marginTop="1dp"
+        android:layout_marginBottom="39dp"
+        app:layout_constraintBottom_toTopOf="@+id/test"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -19,12 +21,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/top"
+        android:onClick="goTop"
         android:text="@string/top"
         app:iconPadding="0dp"
         app:layout_constraintBottom_toTopOf="@+id/right"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:onClick="goTop" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/left"
@@ -33,11 +35,11 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="50dp"
         android:layout_marginBottom="48dp"
+        android:onClick="goLeft"
         android:text="@string/left"
         app:layout_constraintBottom_toBottomOf="@+id/bottom"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/top"
-        android:onClick="goLeft"/>
+        app:layout_constraintTop_toTopOf="@+id/top" />
 
     <Button
         android:id="@+id/right"
@@ -45,10 +47,10 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="89dp"
+        android:onClick="goRight"
         android:text="@string/right"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:onClick="goRight"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/bottom"
@@ -56,8 +58,19 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="37dp"
         android:layout_marginBottom="39dp"
+        android:onClick="goBottom"
         android:text="@string/bottom"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/right"
-        android:onClick="goBottom"/>
+        app:layout_constraintEnd_toStartOf="@+id/right" />
+
+    <TextView
+        android:id="@+id/test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="222dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/idGV" />
 </androidx.constraintlayout.widget.ConstraintLayout>

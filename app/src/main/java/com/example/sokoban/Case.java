@@ -17,7 +17,7 @@ public class Case {
             case "#":
                 this.type = CaseType.MUR;
                 break;
-            case "X":
+            case "x":
                 this.type = CaseType.DESTINATION;
                 break;
             case "P":

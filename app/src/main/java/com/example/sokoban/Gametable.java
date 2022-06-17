@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,8 +24,10 @@ public class Gametable extends AppCompatActivity {
 
     Case[] listeElement = new Case[54];
     Case[][] plateauFinal;
+    ArrayList<Case> destinationCases = new ArrayList<Case>();
     Personnage joueur;
     GridView grid;
+    int level = 1;
     ArrayList<Caisse> listeCaisses = new ArrayList<Caisse>();
 
     public void initGame(char[][] plateau){
@@ -34,7 +37,6 @@ public class Gametable extends AppCompatActivity {
         plateauFinal = new Case[plateau.length][];
         grid = findViewById(R.id.idGV);
         int index = 0;
-        int indexCaisse = 0;
         for(int i = 0; i < plateau.length; i++){
             ligne = plateau[i];
             Case[] finalLigne = new Case[ligne.length];
@@ -50,6 +52,9 @@ public class Gametable extends AppCompatActivity {
                 if(element.getType() == CaseType.BOITE){
                     listeCaisses.add(new Caisse(element.getX(), element.getY()));
                 }
+                if(element.getType() == CaseType.DESTINATION){
+                    destinationCases.add(element);
+                }
             }
             plateauFinal[i] = finalLigne;
         }
@@ -62,7 +67,24 @@ public class Gametable extends AppCompatActivity {
 
     }
 
-    public void updateView(){
+    public boolean itsWin(){
+        boolean victoire = true;
+        for(Case d: destinationCases){
+            if(plateauFinal[d.getY()][d.getX()].getType() != CaseType.BOITE){
+                victoire = false;
+            }
+        }
+        return victoire;
+    }
+
+    public void updateView() throws IOException {
+        TextView test;
+        if(itsWin()){
+            test = findViewById(R.id.test);
+            test.setText("Gagné");
+            /*level++;
+            initGame(getTableau());*/
+        }
         grid.setNumColumns(9);
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -70,7 +92,7 @@ public class Gametable extends AppCompatActivity {
         grid.setAdapter(adaptationGrid);
     }
 
-    public void goLeft(View view){
+    public void goLeft(View view) throws IOException {
 
         int xJoueur = joueur.getX();
         int yJoueur = joueur.getY();
@@ -82,20 +104,30 @@ public class Gametable extends AppCompatActivity {
                     if(c.getX() == xJoueur-1 && c.getY() == yJoueur){
                         c.setX(xJoueur-2);
                         plateauFinal[yJoueur][xJoueur-2].setType("C");
-                        plateauFinal[yJoueur][xJoueur-1].setType("vide");
+                        if(destinationCases.contains(plateauFinal[yJoueur][xJoueur-1])){
+                            plateauFinal[yJoueur][xJoueur-1].setType("x");
+                        }
+                        else {
+                            plateauFinal[yJoueur][xJoueur-1].setType("vide");
+                        }
                     }
                 }
             }
             if(plateauFinal[yJoueur][xJoueur-1].getType() != CaseType.BOITE){
                 plateauFinal[yJoueur][xJoueur-1].setType("P");
-                plateauFinal[yJoueur][xJoueur].setType("vide");
+                if(destinationCases.contains(plateauFinal[yJoueur][xJoueur])){
+                    plateauFinal[yJoueur][xJoueur].setType("x");
+                }
+                else {
+                    plateauFinal[yJoueur][xJoueur].setType("vide");
+                }
                 joueur.setX(xJoueur-1);
             }
         }
         updateView();
     }
 
-    public void goRight(View view){
+    public void goRight(View view) throws IOException {
         int xJoueur = joueur.getX();
         int yJoueur = joueur.getY();
         if( xJoueur+1 <= 8 && plateauFinal[yJoueur][xJoueur+1].getType() != CaseType.MUR){
@@ -105,20 +137,30 @@ public class Gametable extends AppCompatActivity {
                     if(c.getX() == xJoueur+1 && c.getY() == yJoueur){
                         c.setX(xJoueur+2);
                         plateauFinal[yJoueur][xJoueur+2].setType("C");
-                        plateauFinal[yJoueur][xJoueur+1].setType("vide");
+                        if(destinationCases.contains(plateauFinal[yJoueur][xJoueur+1])){
+                            plateauFinal[yJoueur][xJoueur+1].setType("x");
+                        }
+                        else {
+                            plateauFinal[yJoueur][xJoueur+1].setType("vide");
+                        }
                     }
                 }
             }
             if(plateauFinal[yJoueur][xJoueur+1].getType() != CaseType.BOITE){
                 plateauFinal[yJoueur][xJoueur+1].setType("P");
-                plateauFinal[yJoueur][xJoueur].setType("vide");
+                if(destinationCases.contains(plateauFinal[yJoueur][xJoueur])){
+                    plateauFinal[yJoueur][xJoueur].setType("x");
+                }
+                else {
+                    plateauFinal[yJoueur][xJoueur].setType("vide");
+                }
                 joueur.setX(xJoueur+1);
             }
         }
         updateView();
     }
 
-    public void goTop(View view){
+    public void goTop(View view) throws IOException {
         int xJoueur = joueur.getX();
         int yJoueur = joueur.getY();
         if( yJoueur-1 >= 0 && plateauFinal[yJoueur-1][xJoueur].getType() != CaseType.MUR){
@@ -129,19 +171,30 @@ public class Gametable extends AppCompatActivity {
                         c.setY(yJoueur-2);
                         plateauFinal[yJoueur-2][xJoueur].setType("C");
                         plateauFinal[yJoueur-1][xJoueur].setType("vide");
+                        if(destinationCases.contains(plateauFinal[yJoueur-1][xJoueur])){
+                            plateauFinal[yJoueur-1][xJoueur].setType("x");
+                        }
+                        else {
+                            plateauFinal[yJoueur-1][xJoueur].setType("vide");
+                        }
                     }
                 }
             }
             if(plateauFinal[yJoueur-1][xJoueur].getType() != CaseType.BOITE){
                 plateauFinal[yJoueur-1][xJoueur].setType("P");
-                plateauFinal[yJoueur][xJoueur].setType("vide");
+                if(destinationCases.contains(plateauFinal[yJoueur-1][xJoueur])){
+                    plateauFinal[yJoueur][xJoueur].setType("x");
+                }
+                else {
+                    plateauFinal[yJoueur][xJoueur].setType("vide");
+                }
                 joueur.setY(yJoueur-1);
             }
         }
         updateView();
     }
 
-    public void goBottom(View view){
+    public void goBottom(View view) throws IOException {
         int xJoueur = joueur.getX();
         int yJoueur = joueur.getY();
         if( yJoueur+1 <= 5 && plateauFinal[yJoueur+1][xJoueur].getType() != CaseType.MUR){
@@ -150,62 +203,57 @@ public class Gametable extends AppCompatActivity {
                     if(yJoueur+2<=5 && plateauFinal[yJoueur+2][xJoueur].getType() != CaseType.MUR){
                         c.setY(yJoueur+2);
                         plateauFinal[yJoueur+2][xJoueur].setType("C");
-                        plateauFinal[yJoueur+1][xJoueur].setType("vide");
+                        if(destinationCases.contains(plateauFinal[yJoueur+1][xJoueur])){
+                            plateauFinal[yJoueur+1][xJoueur].setType("x");
+                        }
+                        else {
+                            plateauFinal[yJoueur+1][xJoueur].setType("vide");
+                        }
                     }
                 }
             }
             if(plateauFinal[yJoueur+1][xJoueur].getType() != CaseType.BOITE) {
                 plateauFinal[yJoueur + 1][xJoueur].setType("P");
-                plateauFinal[yJoueur][xJoueur].setType("vide");
+                if(destinationCases.contains(plateauFinal[yJoueur][xJoueur])){
+                    plateauFinal[yJoueur][xJoueur].setType("x");
+                }
+                else {
+                    plateauFinal[yJoueur][xJoueur].setType("vide");
+                }
                 joueur.setY(yJoueur + 1);
             }
         }
         updateView();
     }
 
-    /*
-        ..####...
-        ###..####
-        #.....C.#
-        #.#..#C.#
-        #.x.x#P.#
-        #########
-    */
-
 
     public char[][] getTableau() throws IOException, MalformedURLException {
-        String urlAPI = "http://185.212.225.90/api/tableau/1";
+        String urlAPI = "http://185.212.225.90/api/tableau/" + String.valueOf(level);
         GetData data = new GetData();
         String resultData = "";
         JSONArray array = new JSONArray();
         String ligne = "";
+        char[][] plateau = null;
         try {
             resultData = data.execute(urlAPI).get();
             JSONObject object = new JSONObject(resultData);
             array = object.getJSONArray("data");
+            plateau = new char[6][9];
 
             for(int i = 0; i < array.length(); i++){
                 JSONObject ligneJSON = array.getJSONObject(i);
 
                 ligne = ligneJSON.getString("ligne"+(i+1));
+                for(int j= 0; j < ligne.length(); j++){
+                    plateau[i][j] = ligne.charAt(j);
+                }
                 Log.i("vv", String.valueOf(ligne));
             }
         } catch (ExecutionException | InterruptedException | JSONException e) {
             e.printStackTrace();
         }
-
-
-
-        char[][] temp = {
-                {'.', '.', '#', '#', '#', '#', '.', '.', '.'},
-                {'#', '#', '#', '.', '.', '#', '#', '#', '#'},
-                {'#', '.', '.', '.', '.', '.', 'C', '.', '#'},
-                {'#', '.', '#', '.', '.', '#', 'C', '.', '#'},
-                {'#', '.', 'X', '.', 'X', '#', 'P', '.', '#'},
-                {'#', '#', '#', '#', '#', '#', '#', '#', '#'}
-        };
-
-        return temp;
+        System.out.println(plateau);
+        return plateau;
     }
 
     @Override
@@ -215,8 +263,6 @@ public class Gametable extends AppCompatActivity {
         char[][] tab = {};
         try {
             tab = getTableau();
-            String[] temp = new String [6];
-
             initGame(tab);
 
 
