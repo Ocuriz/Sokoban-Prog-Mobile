@@ -2,7 +2,6 @@ package com.example.sokoban;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Person;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -14,6 +13,7 @@ import android.widget.TextView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -24,6 +24,7 @@ public class Gametable extends AppCompatActivity {
 
     Case[] listeElement = new Case[54];
     Case[][] plateauFinal;
+    char[][] plateauActuel = {};
     ArrayList<Case> destinationCases = new ArrayList<Case>();
     Personnage joueur;
     GridView grid;
@@ -31,6 +32,9 @@ public class Gametable extends AppCompatActivity {
     ArrayList<Caisse> listeCaisses = new ArrayList<Caisse>();
 
     public void initGame(char[][] plateau){
+        plateauActuel = plateau;
+        TextView levelText = findViewById(R.id.level);
+        levelText.setText("Level " + String.valueOf(level));
         char[] ligne;
         ArrayList<String> lst = new ArrayList<String>();
         ArrayAdapter<String> adapter;
@@ -78,12 +82,18 @@ public class Gametable extends AppCompatActivity {
     }
 
     public void updateView() throws IOException {
-        TextView test;
         if(itsWin()){
-            test = findViewById(R.id.test);
-            test.setText("Gagné");
-            /*level++;
-            initGame(getTableau());*/
+            if(level < 3){
+                level++;
+                listeCaisses.clear();
+                destinationCases.clear();
+                setContentView(R.layout.gametable);
+                initGame(getTableau());
+            }
+            else{
+                TextView levelText = findViewById(R.id.level);
+                levelText.setText("Fini");
+            }
         }
         grid.setNumColumns(9);
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -224,6 +234,11 @@ public class Gametable extends AppCompatActivity {
             }
         }
         updateView();
+    }
+
+    public void retry(View view){
+        setContentView(R.layout.gametable);
+        initGame(plateauActuel);
     }
 
 
